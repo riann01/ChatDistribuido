@@ -24,7 +24,7 @@ public class BalaoMensagem extends javax.swing.JPanel {
                         break;
                     }
                     else {
-                        msgComHTML = mensagem.substring(i, i+40);
+                        msgComHTML = msgComHTML + "&#013;" + mensagem.substring(i, i+40);
                     } 
                 }
             }
@@ -35,9 +35,6 @@ public class BalaoMensagem extends javax.swing.JPanel {
         return (
             "<html>"
             + "<body>"
-            + "<style>"
-            + "p {text-align: justify;}"
-            + "</style>"
             + "<p text-align: justify>" + msgComHTML + "</p>"
             + "</body>"
             + "</html>"

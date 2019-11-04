@@ -5,23 +5,37 @@ import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import sds.User;
+import sds.Cliente;
+import sds.Evento;
 
 public class TelaChat extends javax.swing.JFrame implements ActionListener {
 
-    ImageIcon fotoUsuarioI;
+    private ImageIcon fotoUsuarioI;
+    private String host;
+    private User usr;
+    private Cliente cliente = new Cliente();
+    private List<Evento> eventos;
     
     public TelaChat(User usr, String host, int porta) {
         super("Sala de Chat em " + host + ":" + porta);
         initComponents();
         desenharTela(usr.getFoto(), usr.getNickname());
         fotoUsuarioI = usr.getFoto();
+        this.host = host;
+        this.usr = usr;
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         btnEnviar.addActionListener(this);
         inserirComponente(new BroadcastMensagem(usr, 0));
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(50);
+        atualizarNum(host);
+        new Thread(AttEventos).start();
     }
     
         
@@ -38,12 +52,13 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         if (e.getSource() == btnEnviar) {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
+            painelMsgs.add(retornaMargem(), gbc);
             painelMsgs.add(new BalaoMensagem(fotoUsuarioI, labelNickname.getText(), txtAreaMsg.getText()), gbc);
             painelMsgs.repaint();
             painelMsgs.updateUI();
         }
         if (e.getSource() == btnSair) {
-            
+            sairDoChat(host, this.usr);
             this.dispose();
         }
     }
@@ -51,10 +66,69 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     public void inserirComponente(Component comp) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        painelMsgs.add(retornaMargem(), gbc);
         painelMsgs.add(comp, gbc);
         painelMsgs.repaint();
         painelMsgs.updateUI();
+    }
+    
+    public void atualizarNum(String host) {
+        try {
+            numUsers.setText("Há " + cliente.realizarAcao(host).retornaQtdUsuarios() + " usuário(s) online no momento.");
+        }
+        catch (RemoteException e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void entrarNoChat(String host, User usr) {
+        try {
+            cliente.realizarAcao(host).incluirUsuario(usr);
+        }
+        catch (RemoteException e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao entrar na sala de chat: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+    }
+    
+    public void sairDoChat(String host, User usr) {
+        try {
+            cliente.realizarAcao(host).removerUsuario(usr);
+        }
+        catch (RemoteException e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao entrar na sala de chat: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+    }
+    
+    public void verificarAtualizacoesDeEventos() {
+        try {
+            if (!(eventos.get(eventos.size()-1).equals(cliente.realizarAcao(host).retornarEventos()))) {
+                eventos = cliente.realizarAcao(host).retornarEventos();
+            }
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + e.getMessage() + "\nO Chat será fechado.");
+            System.exit(0);
+        }
+    }
+    
+    private Runnable AttEventos = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    wait(2);
+                    verificarAtualizacoesDeEventos();
+                }
+            } catch (Exception e){}
+       }
+    };
+    
+    public JPanel retornaMargem() {
+        JPanel margem = new JPanel();
+        margem.setSize(50, 50);
+        return margem;
     }
     
     @SuppressWarnings("unchecked")

@@ -1,31 +1,41 @@
 package sds;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 public class Servidor implements InterfaceChat {
+
+    private List<User> usuarios;
+    private List<Evento> eventos;
     
-    private int qtdUsuarios = 0;
-    
-    public void alteraNumUsr(int op) {
-        if (op == 0) {
-            ++qtdUsuarios;
+    public static void main(String[] args) {
+        Servidor serv = new Servidor();
+        try {
+            InterfaceChat stub = (InterfaceChat) UnicastRemoteObject.exportObject(serv, 0);
+            Registry reg = LocateRegistry.getRegistry();
+            reg.bind("InterfaceChat", stub);
         }
-        else {
-            --qtdUsuarios;
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     @Override
     public int retornaQtdUsuarios() {
-        return this.qtdUsuarios;
+        return this.usuarios.size();
     }
     
     @Override
-    public void escutar () {
-        
+    public void incluirEvento(Evento evt) {
+        eventos.add(evt);
     }
     
     @Override
-    public void enviarMensagemParaUsuarios() {
-        
+    public List<Evento> retornarEventos() {
+        return this.eventos;
     }
     
     @Override
@@ -47,4 +57,22 @@ public class Servidor implements InterfaceChat {
             }
         }
     }
+    
+    
+    
+    @Override
+    public List<User> retornaUsuarios() {
+        return usuarios;
+    }
+    
+    @Override
+    public void incluirUsuario(User usr) {
+        usuarios.add(usr);
+    }
+    
+    @Override
+    public void removerUsuario(User usr) {
+        usuarios.remove(usr);
+    }
+   
 }
