@@ -12,11 +12,13 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import sds.User;
 
 public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
 
     private ImageIcon foto;
     private boolean escolheuFoto;
+    
     public TelaEntrada() {
         initComponents();
         this.setVisible(true);
@@ -31,35 +33,42 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
     private void initComponents() {
 
         btnEntrar = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        ipServidor = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         btnSair = new javax.swing.JButton();
         quadro = new javax.swing.JLabel();
         fotoUsuario = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        nickname = new javax.swing.JTextField();
+        portaServidor = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Entrar");
-        setMinimumSize(new java.awt.Dimension(233, 369));
-        setPreferredSize(new java.awt.Dimension(233, 369));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(240, 535));
+        setPreferredSize(new java.awt.Dimension(240, 535));
         setResizable(false);
         getContentPane().setLayout(null);
 
         btnEntrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEntrar.setText("Entrar");
         getContentPane().add(btnEntrar);
-        btnEntrar.setBounds(30, 300, 80, 30);
-        getContentPane().add(jTextField1);
-        jTextField1.setBounds(20, 250, 190, 30);
+        btnEntrar.setBounds(30, 450, 80, 30);
+
+        ipServidor.setText("localhost");
+        getContentPane().add(ipServidor);
+        ipServidor.setBounds(20, 330, 190, 30);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Nome de Usuário");
+        jLabel1.setText("IP do Servidor");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(20, 220, 150, 22);
+        jLabel1.setBounds(20, 300, 150, 22);
 
         btnSair.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSair.setText("Sair");
         getContentPane().add(btnSair);
-        btnSair.setBounds(120, 300, 80, 30);
+        btnSair.setBounds(120, 450, 80, 30);
 
         quadro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         quadro.setText("jLabel2");
@@ -74,6 +83,22 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         fotoUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         getContentPane().add(fotoUsuario);
         fotoUsuario.setBounds(10, 20, 210, 180);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Nome de Usuário");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(20, 220, 150, 22);
+        getContentPane().add(nickname);
+        nickname.setBounds(20, 250, 190, 30);
+
+        portaServidor.setText("1234");
+        getContentPane().add(portaServidor);
+        portaServidor.setBounds(20, 410, 190, 30);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Porta");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(20, 380, 150, 22);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -95,6 +120,7 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
                     image = image.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
                     ImageIcon icon = new ImageIcon(image);
                     fotoUsuario.setIcon(icon);
+                    foto = icon;
                 }
                 escolheuFoto = true;
             } catch (IOException e) {
@@ -150,8 +176,15 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         }
         if (e.getSource() == btnEntrar) {
             this.dispose();
-            new TelaChat();
+            new TelaChat(criarUser(foto, nickname.getText()), ipServidor.getText(), Integer.parseInt(portaServidor.getText()));
         }
+    }
+    
+    public User criarUser(ImageIcon foto, String nickname) {
+        User usr = new User();
+        usr.setFoto(foto);
+        usr.setNickname(nickname);
+        return usr;
     }
     
     public void setDefaultPhoto() {
@@ -166,8 +199,12 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnEntrar;
     private javax.swing.JButton btnSair;
     private javax.swing.JLabel fotoUsuario;
+    private javax.swing.JTextField ipServidor;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField nickname;
+    private javax.swing.JTextField portaServidor;
     private javax.swing.JLabel quadro;
     // End of variables declaration//GEN-END:variables
 }
