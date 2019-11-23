@@ -91,7 +91,7 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         getContentPane().add(nickname);
         nickname.setBounds(20, 250, 190, 30);
 
-        portaServidor.setText("1234");
+        portaServidor.setText("1099");
         getContentPane().add(portaServidor);
         portaServidor.setBounds(20, 410, 190, 30);
 

@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistrubuido/src/screens/TelaChat.java</file>
-            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistrubuido/src/screens/TelaEntrada.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/screens/TelaEntrada.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/sds/Evento.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/screens/BalaoMensagem.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/screens/TelaServidor.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/screens/TelaChat.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/sds/InterfaceChat.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/sds/Main.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/sds/Cliente.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/screens/TelaEscolha.java</file>
+            <file>file:/C:/Users/Rian/Documents/NetBeansProjects/ChatDistribuido/src/sds/Servidor.java</file>
         </group>
     </open-files>
 </project-private>
