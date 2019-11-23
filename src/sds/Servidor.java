@@ -1,15 +1,22 @@
 package sds;
 
+import java.io.Serializable;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class Servidor implements InterfaceChat {
+public class Servidor implements InterfaceChat, Serializable {
 
     private List<User> usuarios;
     private List<Evento> eventos;
+    
+    public Servidor () {
+        usuarios = new ArrayList<User>();
+        eventos = new ArrayList<Evento>();
+    }
     
     public static void main(String[] args) {
         Servidor serv = new Servidor();

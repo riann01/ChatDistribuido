@@ -40,6 +40,7 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         inserirComponente(new BroadcastMensagem(usr, 0));
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(50);
         //cliente.entrarNoChat(host,usr);
+        entrarNoChat(host,usr);
         atualizarNum(host);
         //new Thread(AttEventos).start();
         txtAreaMsg.setText("");
@@ -70,7 +71,7 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
             }
         }
         if (e.getSource() == btnSair) {
-            //sairDoChat(host, this.usr);
+            sairDoChat(host, this.usr);
             this.dispose();
         }
     }
@@ -85,22 +86,17 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     }
     
     public void atualizarNum(String host) {
-        numUsers.setText("Há " + cliente.atualizarNum(host));
+        int usrOnline = cliente.atualizarNum(host);
+        numUsers.setText("Há " + usrOnline + "usuário" + (usrOnline > 1 ? "s" : "") + "online");
     }
     
     public void entrarNoChat(String host, User usr) {
         cliente.entrarNoChat(host, usr);
     }
     
-   /*public void sairDoChat(String host, User usr) {
-        try {
-            cliente.realizarAcao(host).removerUsuario(usr);
-        }
-        catch (RemoteException e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao sair na sala de chat: " + e.getMessage() + "\n O chat será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        }
-    }*/
+   public void sairDoChat(String host, User usr) {
+       cliente.sairDoChat(host, usr);
+    }
     
     /*public void verificarAtualizacoesDeEventos() {
         try {

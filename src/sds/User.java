@@ -1,9 +1,11 @@
 package sds;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import javax.swing.ImageIcon;
 
-public class User implements Comparator<User> {
+public class User implements Comparator<User>, Serializable {
+    
     private ImageIcon foto;
     private String nickname;
     

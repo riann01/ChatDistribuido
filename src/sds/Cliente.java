@@ -1,33 +1,24 @@
 package sds;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 
-public class Cliente {
+public class Cliente implements Serializable {
     
-    /*public InterfaceChat realizarAcao(String host) {
-        try {
-            Registry reg = LocateRegistry.getRegistry(host);
-            InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
-            return stub;
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-        return null;
-    }*/
     
     public int atualizarNum(String host) {
         
         try {
-             Registry reg = LocateRegistry.getRegistry(host);
+            Registry reg = LocateRegistry.getRegistry(host);
             InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
-             return stub.retornaQtdUsuarios();
+            return stub.retornaQtdUsuarios();
         }
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro1: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         
         return -1;
@@ -35,14 +26,19 @@ public class Cliente {
     
     public void entrarNoChat(String host, User usr) {
         try {
-             Registry reg = LocateRegistry.getRegistry(host);
+            Registry reg = LocateRegistry.getRegistry(host);
             InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
             stub.incluirUsuario(usr);
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao entrar na sala de chat: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
             System.exit(0);
         }
+    }
+    
+    public void sairDoChat(String host, User usr) {
+        
     }
     
 }
