@@ -24,7 +24,6 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     private String host;
     private User usr;
     private Cliente cliente = new Cliente();
-    private List<Evento> eventos;
     
     public TelaChat(User usr, String host, int porta) {
         super("Sala de Chat em " + host + ":" + porta);
@@ -42,9 +41,8 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         //cliente.entrarNoChat(host,usr);
         entrarNoChat(host,usr);
         atualizarNum(host);
-        //new Thread(AttEventos).start();
+        new Thread(cliente.verificaAtualizacaoEvento).start();
         txtAreaMsg.setText("");
-
     }
     
         
@@ -87,28 +85,16 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     
     public void atualizarNum(String host) {
         int usrOnline = cliente.atualizarNum(host);
-        numUsers.setText("Há " + usrOnline + "usuário" + (usrOnline > 1 ? "s" : "") + "online");
+        numUsers.setText("Há " + usrOnline + " usuário" + (usrOnline > 1 ? "s " : " ") + "online");
     }
     
     public void entrarNoChat(String host, User usr) {
         cliente.entrarNoChat(host, usr);
     }
     
-   public void sairDoChat(String host, User usr) {
+    public void sairDoChat(String host, User usr) {
        cliente.sairDoChat(host, usr);
     }
-    
-    /*public void verificarAtualizacoesDeEventos() {
-        try {
-            if (!(eventos.get(eventos.size()-1).equals(cliente.realizarAcao(host).retornarEventos().get(cliente.realizarAcao(host).retornarEventos().size()-1)))) {
-                eventos = cliente.realizarAcao(host).retornarEventos();
-            }
-        }
-        catch(Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + e.getMessage() + "\nO Chat será fechado.");
-            System.exit(0);
-        }
-    }*/
     
     /*private Runnable AttEventos = new Runnable() {
         @Override
