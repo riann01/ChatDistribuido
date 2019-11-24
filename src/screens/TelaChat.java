@@ -1,22 +1,24 @@
 package screens;
 
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import sds.User;
 import sds.Cliente;
 import sds.Evento;
 
-public class TelaChat extends javax.swing.JFrame implements ActionListener {
+public class TelaChat extends javax.swing.JFrame implements ActionListener, Runnable {
 
     private ImageIcon fotoUsuarioI;
     private String host;
@@ -25,8 +27,8 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     private List<Evento> eventos = new ArrayList<Evento>();
     private List<Evento> renderizados = new ArrayList<Evento>();
     
-    public TelaChat(User usr, String host, int porta) {
-        super("Sala de Chat em " + host + ":" + porta);
+    public TelaChat(User usr, String host) {
+        super("Sala de Chat em " + host);
         initComponents();
         desenharTela(usr.getFoto(), usr.getNickname());
         fotoUsuarioI = usr.getFoto();
@@ -37,11 +39,10 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         btnEnviar.addActionListener(this);
         btnSair.addActionListener(this);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(50);
-        //cliente.entrarNoChat(host,usr);
         entrarNoChat(host,usr);
         atualizarNum(host);
         enviarBdc("Entrar");
-        new Thread(verificaAtualizacaoEvento).start();
+        new Thread(this).start();
         txtAreaMsg.setText("");
     }
     
@@ -58,11 +59,6 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnEnviar) {
             if (!txtAreaMsg.getText().equals("")) {
-                /*GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                painelMsgs.add(retornaMargem(), gbc);
-                painelMsgs.add(new BalaoMensagem(fotoUsuarioI, labelNickname.getText(), txtAreaMsg.getText()), gbc);
-                painelMsgs.repaint();*/
                 enviarMensagem(txtAreaMsg.getText());
                 painelMsgs.updateUI();
                 txtAreaMsg.setText("");
@@ -91,6 +87,11 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         evtMsg.setConteudoEvento(msg);
         evtMsg.setTipoEvento("MSG");
         evtMsg.setUsr(usr);
+        int base;
+        Random ran = new Random();
+        base = ran.nextInt((99 - 1) + 1);
+        base = base * 7 * Calendar.MILLISECOND;
+        evtMsg.setBase(base);
         cliente.incluirEvento(evtMsg);
     }
     
@@ -106,6 +107,11 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         }
         evtBdc.setTipoEvento("BDC");
         evtBdc.setUsr(usr);
+        int base;
+        Random ran = new Random();
+        base = ran.nextInt((99 - 1) + 1);
+        base = base * 7 * Calendar.MILLISECOND;
+        evtBdc.setBase(base);
         cliente.incluirEvento(evtBdc);
     }
     
@@ -119,7 +125,9 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     }
     
     public void sairDoChat(String host, User usr) {
+       enviarBdc("Sair");
        cliente.sairDoChat(host, usr);
+       System.exit(0);
     }
     
     public void desenhaEventos() {
@@ -139,64 +147,43 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
                             renderizados.add(eventos.get(i));
                         }
                     }
-                    System.out.println("PASSEI POR AQJI SDKFSDMFKS");
+                    jScrollPane1.getVerticalScrollBar().setValue(jScrollPane1.getVerticalScrollBar().getMaximum());
                 }
             }
         }
         
     }
     
-    public Runnable verificaAtualizacaoEvento = new Runnable() {
-        @Override
-        public void run() {
-            while(true) {
-                try {
-                    //sleep(1);
-                    if (eventos.isEmpty()) {
-                        eventos = cliente.retornarEventos();
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TelaChat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (renderizados.isEmpty()) {
+                eventos = cliente.retornarEventos();
+                desenhaEventos();
+            }
+            else {
+                List <Evento> eventosServTemp = cliente.retornarEventos();
+                if (!(eventosServTemp == null)) {
+                    if (renderizados.size() != eventosServTemp.size()) {
+                        eventos = eventosServTemp;
                         desenhaEventos();
                     }
-                    else {
-                        List <Evento> eventosServTemp = cliente.retornarEventos();
-                        if (!(renderizados.contains(eventosServTemp.get(eventosServTemp.size()-1)))) {
-                            /*System.out.println(eventos.get(eventos.size()-1).getUsr().getNickname());
-                            System.out.println(eventos.get(eventos.size()-1).getConteudoEvento());
-                            System.out.println(eventos.get(eventos.size()-1).getTipoEvento());
-                            System.out.println(eventosServTemp.get(eventosServTemp.size()-1).getUsr().getNickname());
-                            System.out.println(eventosServTemp.get(eventosServTemp.size()-1).getConteudoEvento());
-                            System.out.println(eventosServTemp.get(eventosServTemp.size()-1).getTipoEvento());
-                            System.out.println(eventos.get(eventos.size()-1).equals(eventosServTemp.get(eventosServTemp.size()-1)));*/
-                            eventos = eventosServTemp;
-                            desenhaEventos();
-                            System.out.println("TO AQUI");
-                            
-                            //break;
-                        }
-                    }
-                }
-                catch(Exception e) {
-                    JOptionPane.showMessageDialog(null, "Ocorreu um erro5:\n" + e.getMessage() + "\nO Chat será fechado.");
-                    e.printStackTrace();
-                    System.exit(0);
                 }
             }
+                
         }
-    };
+    }
     
     public JPanel retornaMargem() {
         JPanel margem = new JPanel();
         margem.setSize(50, 50);
         return margem;
-    }
-    
-    public void trocarImagemFundo(Graphics g) {
-        ImageIcon fundo = new ImageIcon(this.getClass().getResource("/img/usr-fundo.jpeg"));
-
-        /*painelMsgs.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(fundo.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
-        g2d.dispose();*/
-
     }
     
     @SuppressWarnings("unchecked")
@@ -300,10 +287,6 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String n = txtAreaMsg.getText();
             if (!(txtAreaMsg.getText().equals(""))) {
-                /*GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                painelMsgs.add(retornaMargem(), gbc);
-                painelMsgs.add(new BalaoMensagem(fotoUsuarioI, labelNickname.getText(), txtAreaMsg.getText()), gbc);*/
                 enviarMensagem(txtAreaMsg.getText());
                 painelMsgs.updateUI();
                 txtAreaMsg.setText("");

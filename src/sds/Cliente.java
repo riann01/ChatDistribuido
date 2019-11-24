@@ -10,8 +10,12 @@ import javax.swing.JOptionPane;
 public class Cliente implements Serializable {
     
     private String host;
-    private List<Evento> eventos = new ArrayList<Evento>();
-    
+    private List<Evento> eventos;
+
+    public Cliente() {
+        this.eventos = new ArrayList<Evento>();
+    }
+
     public int atualizarNum(String host) {
         
         try {
@@ -58,14 +62,17 @@ public class Cliente implements Serializable {
             return stub.retornarEventos();
         }
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro3: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            if (!e.getMessage().contains("EOFException")) {
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro3: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+                System.exit(0);
+            }
         }
         return null;
     }
     
     public void incluirEvento(Evento evt) {
-         try {
+        try {
             Registry reg = LocateRegistry.getRegistry(host);
             InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
             stub.incluirEvento(evt);
@@ -75,6 +82,20 @@ public class Cliente implements Serializable {
             e.printStackTrace();
             System.exit(0);
         }
+    }
+    
+    public List<User> retornarUsuarios() {
+        try {
+            Registry reg = LocateRegistry.getRegistry(host);
+            InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
+            stub.retornaUsuarios();
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro4: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return null;
     }
     
     public void setHost(String host) {

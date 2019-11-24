@@ -1,8 +1,6 @@
 package screens;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -12,7 +10,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import sds.Evento;
 import sds.User;
 
 public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
@@ -41,21 +38,19 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         fotoUsuario = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         nickname = new javax.swing.JTextField();
-        portaServidor = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Entrar");
         setBackground(new java.awt.Color(255, 255, 255));
-        setMinimumSize(new java.awt.Dimension(240, 535));
-        setPreferredSize(new java.awt.Dimension(240, 535));
+        setMinimumSize(new java.awt.Dimension(229, 450));
+        setPreferredSize(new java.awt.Dimension(229, 450));
         setResizable(false);
         getContentPane().setLayout(null);
 
         btnEntrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEntrar.setText("Entrar");
         getContentPane().add(btnEntrar);
-        btnEntrar.setBounds(30, 450, 80, 30);
+        btnEntrar.setBounds(30, 370, 80, 30);
 
         ipServidor.setText("localhost");
         getContentPane().add(ipServidor);
@@ -69,10 +64,9 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         btnSair.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSair.setText("Sair");
         getContentPane().add(btnSair);
-        btnSair.setBounds(120, 450, 80, 30);
+        btnSair.setBounds(120, 370, 80, 30);
 
         quadro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        quadro.setText("jLabel2");
         quadro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 quadroMouseClicked(evt);
@@ -91,15 +85,6 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         jLabel2.setBounds(20, 220, 150, 22);
         getContentPane().add(nickname);
         nickname.setBounds(20, 250, 190, 30);
-
-        portaServidor.setText("1099");
-        getContentPane().add(portaServidor);
-        portaServidor.setBounds(20, 410, 190, 30);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Porta");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(20, 380, 150, 22);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -146,7 +131,7 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -176,8 +161,19 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
             this.dispose();
         }
         if (e.getSource() == btnEntrar) {
-            this.dispose();
-            new TelaChat(criarUser(foto, nickname.getText()), ipServidor.getText(), Integer.parseInt(portaServidor.getText()));
+            boolean flag = true;
+            if (nickname.getText().length() < 3) {
+                JOptionPane.showMessageDialog(null, "Seu nickname deve conter no mínimo 3 caracteres.", "Erro", JOptionPane.ERROR_MESSAGE);
+                flag = false;
+            }
+            if (ipServidor.getText().equals("") || ipServidor.getText().equals(" ")) {
+                JOptionPane.showMessageDialog(null, "O IP inserido não parece ser válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                flag = false;
+            }
+            if (flag) {
+                this.dispose();
+                new TelaChat(criarUser(foto, nickname.getText()), ipServidor.getText());
+            }
         }
     }
     
@@ -196,38 +192,6 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         fotoUsuario.setIcon(foto);
     }
     
-    public void comparar() {
-        User usr1 = new User();
-        usr1.setNickname("riann");
-        usr1.setFoto(foto);
-        Evento evt1 = new Evento();
-        evt1.setConteudoEvento("POUXA VIDA");
-        evt1.setTipoEvento("MSG");
-        evt1.setUsr(usr1);
-        
-        User usr2 = new User();
-        usr2.setNickname("riann");
-        usr2.setFoto(foto);
-        Evento evt2 = new Evento();
-        evt2.setConteudoEvento("POUXA VIDA");
-        evt2.setTipoEvento("MSG");
-        evt2.setUsr(usr2);
-        if (evt2.equals(evt1)) {
-            System.out.println("OS EVENTOS SAO IGUAIS!!!!!!!!!!!!!!!!!");
-        }
-        else {
-            System.out.println("OS EVENTOS NãO SAO IGUAIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-        
-        if (usr1.equals(usr2)){
-            System.out.println("OS USUARIOS SAO IGUAIS!!!!!!!!!!!!!!");
-        }
-        else {
-            System.out.println("OS USUARIOS NAO SAO IGUAIS!!!!!!!!!!!!!!!!!!");
-        }
-        
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
     private javax.swing.JButton btnSair;
@@ -235,9 +199,7 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JTextField ipServidor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField nickname;
-    private javax.swing.JTextField portaServidor;
     private javax.swing.JLabel quadro;
     // End of variables declaration//GEN-END:variables
 }

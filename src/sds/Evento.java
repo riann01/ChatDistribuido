@@ -8,10 +8,11 @@ public class Evento implements Serializable {
     private String tipoEvento;
     private String conteudoEvento;
     private User usr;
+    private int base;
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = this.getBase();
         hash = 79 * hash + Objects.hashCode(this.tipoEvento);
         hash = 79 * hash + Objects.hashCode(this.conteudoEvento);
         hash = 79 * hash + Objects.hashCode(this.usr);
@@ -38,7 +39,11 @@ public class Evento implements Serializable {
         }
         if (!this.usr.equals(other.usr)) {
             return false;
+        }        
+        if (this.base != other.base) {
+            return false;
         }
+        
         return true;
     }
     
@@ -64,6 +69,14 @@ public class Evento implements Serializable {
 
     public void setUsr(User usr) {
         this.usr = usr;
+    }
+    
+    public int getBase() {
+        return this.base;
+    }
+    
+    public void setBase(int base) {
+        this.base = base;
     }
     
 }

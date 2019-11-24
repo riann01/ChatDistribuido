@@ -31,6 +31,10 @@ public class TelaServidor extends javax.swing.JFrame implements ActionListener {
     public JTextArea getTxtArea() {
         return this.txtAreaStatus;
     }
+    
+    public void descerBarraLateral() {
+        jScrollPane1.getVerticalScrollBar().setValue(jScrollPane1.getVerticalScrollBar().getMaximum());
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

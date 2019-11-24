@@ -10,8 +10,13 @@ import screens.TelaServidor;
 
 public class Servidor implements InterfaceChat, Serializable {
 
-    private List<User> usuarios = new ArrayList<User>();;
-    private List<Evento> eventos = new ArrayList<Evento>();
+    private List<User> usuarios;
+    private List<Evento> eventos;   
+    
+    public Servidor() {
+        usuarios = new ArrayList<User>();
+        eventos = new ArrayList<Evento>();
+    }
     private static TelaServidor tServ = new TelaServidor();
 
     public static void main(String[] args) {
@@ -38,10 +43,24 @@ public class Servidor implements InterfaceChat, Serializable {
     
     @Override
     public void incluirEvento(Evento evt) {
-        eventos.add(evt);
-        tServ.getTxtArea().setText(tServ.getTxtArea().getText() + 
-        "\nEVENTO RECEBIDO:\n" + "USER:\n" + evt.getUsr() + "\nEVT_TYPE:\n"
-        + evt.getTipoEvento() + "\nEVT_CONTENT:\n" + evt.getConteudoEvento());
+        boolean flag = true;
+        if (evt.getTipoEvento() == null) {
+            flag = false;
+        }
+        if (evt.getUsr() == null) {
+            flag = false;
+        }
+        if (evt.getConteudoEvento() == null) {
+            flag = false;
+        }
+        if (flag) {
+            eventos.add(evt);
+            tServ.getTxtArea().setText(tServ.getTxtArea().getText() + 
+            "\nEVENTO RECEBIDO:\n" + "USER:\n" + evt.getUsr() + "\nEVT_TYPE:\n"
+            + evt.getTipoEvento() + "\nEVT_CONTENT:\n" + evt.getConteudoEvento()
+            + "\nBASE:\n" + evt.getBase());
+        }
+        tServ.descerBarraLateral();
     }
     
     @Override
