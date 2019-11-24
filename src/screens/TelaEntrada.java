@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import sds.Evento;
 import sds.User;
 
 public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
@@ -193,6 +194,38 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         image = image.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
         foto = new ImageIcon(image);
         fotoUsuario.setIcon(foto);
+    }
+    
+    public void comparar() {
+        User usr1 = new User();
+        usr1.setNickname("riann");
+        usr1.setFoto(foto);
+        Evento evt1 = new Evento();
+        evt1.setConteudoEvento("POUXA VIDA");
+        evt1.setTipoEvento("MSG");
+        evt1.setUsr(usr1);
+        
+        User usr2 = new User();
+        usr2.setNickname("riann");
+        usr2.setFoto(foto);
+        Evento evt2 = new Evento();
+        evt2.setConteudoEvento("POUXA VIDA");
+        evt2.setTipoEvento("MSG");
+        evt2.setUsr(usr2);
+        if (evt2.equals(evt1)) {
+            System.out.println("OS EVENTOS SAO IGUAIS!!!!!!!!!!!!!!!!!");
+        }
+        else {
+            System.out.println("OS EVENTOS NãO SAO IGUAIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        
+        if (usr1.equals(usr2)){
+            System.out.println("OS USUARIOS SAO IGUAIS!!!!!!!!!!!!!!");
+        }
+        else {
+            System.out.println("OS USUARIOS NAO SAO IGUAIS!!!!!!!!!!!!!!!!!!");
+        }
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

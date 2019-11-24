@@ -1,24 +1,45 @@
 package sds;
 
 import java.io.Serializable;
-import java.util.Comparator;
+import java.util.Objects;
 
-public class Evento implements Comparator<Evento>, Serializable {
+public class Evento implements Serializable {
 
     private String tipoEvento;
     private String conteudoEvento;
     private User usr;
-    
+
     @Override
-    public int compare(Evento ev1, Evento ev2) {
-        if(ev1.getTipoEvento().equals(ev2.getTipoEvento())) {
-            if (ev1.getConteudoEvento().equals(ev2.getConteudoEvento())) {
-                if (ev1.getUsr().equals(ev2.getUsr())) {
-                    return 1;
-                }
-            }
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.tipoEvento);
+        hash = 79 * hash + Objects.hashCode(this.conteudoEvento);
+        hash = 79 * hash + Objects.hashCode(this.usr);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-        return -1;
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Evento other = (Evento) obj;
+        if (!this.tipoEvento.equals(other.tipoEvento)) {
+            return false;
+        }
+        if (!this.conteudoEvento.equals(other.conteudoEvento)) {
+            return false;
+        }
+        if (!this.usr.equals(other.usr)) {
+            return false;
+        }
+        return true;
     }
     
     public String getTipoEvento() {

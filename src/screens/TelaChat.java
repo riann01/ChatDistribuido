@@ -130,6 +130,7 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
                         BroadcastMensagem bmsg = new BroadcastMensagem(eventos.get(i).getConteudoEvento());
                         inserirComponente(bmsg);
                         renderizados.add(eventos.get(i));
+                        atualizarNum(host);
                     }
                     else {
                         if (eventos.get(i).getTipoEvento().equals("MSG")) {
@@ -157,13 +158,19 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
                     }
                     else {
                         List <Evento> eventosServTemp = cliente.retornarEventos();
-                        for (int i = 0; i < eventosServTemp.size(); i++) {
-                            if (!(eventos.contains(eventosServTemp.get(i)))) {
-                                eventos = eventosServTemp;
-                                desenhaEventos();
-                                System.out.println("TO AQUI");
-                                break;
-                            }
+                        if (!(renderizados.contains(eventosServTemp.get(eventosServTemp.size()-1)))) {
+                            /*System.out.println(eventos.get(eventos.size()-1).getUsr().getNickname());
+                            System.out.println(eventos.get(eventos.size()-1).getConteudoEvento());
+                            System.out.println(eventos.get(eventos.size()-1).getTipoEvento());
+                            System.out.println(eventosServTemp.get(eventosServTemp.size()-1).getUsr().getNickname());
+                            System.out.println(eventosServTemp.get(eventosServTemp.size()-1).getConteudoEvento());
+                            System.out.println(eventosServTemp.get(eventosServTemp.size()-1).getTipoEvento());
+                            System.out.println(eventos.get(eventos.size()-1).equals(eventosServTemp.get(eventosServTemp.size()-1)));*/
+                            eventos = eventosServTemp;
+                            desenhaEventos();
+                            System.out.println("TO AQUI");
+                            
+                            //break;
                         }
                     }
                 }
