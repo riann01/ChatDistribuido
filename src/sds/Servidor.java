@@ -50,26 +50,6 @@ public class Servidor implements InterfaceChat, Serializable {
     }
     
     @Override
-    public void enviarDadosUsuario() {
-        
-    }
-    
-    @Override
-    public String broadcastUsuarioES(User usr,int es) {
-        if (es == 0) {
-            return "O usuário " + usr.getNickname() + " entrou no chat, divirtam-se!";
-        }
-        else {
-            if (es == 1) {
-                return "O usuário " + usr.getNickname() + "saiu do chat.";
-            }
-            else {
-                return null;
-            }
-        }
-    }
-    
-    @Override
     public List<User> retornaUsuarios() {
         return usuarios;
     }

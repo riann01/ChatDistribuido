@@ -129,13 +129,16 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
                     if (eventos.get(i).getTipoEvento().equals("BDC")) {
                         BroadcastMensagem bmsg = new BroadcastMensagem(eventos.get(i).getConteudoEvento());
                         inserirComponente(bmsg);
+                        renderizados.add(eventos.get(i));
                     }
                     else {
                         if (eventos.get(i).getTipoEvento().equals("MSG")) {
                             BalaoMensagem bmsg = new BalaoMensagem(eventos.get(i).getUsr(), eventos.get(i).getConteudoEvento());
                             inserirComponente(bmsg);
+                            renderizados.add(eventos.get(i));
                         }
                     }
+                    System.out.println("PASSEI POR AQJI SDKFSDMFKS");
                 }
             }
         }
@@ -153,9 +156,14 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
                         desenhaEventos();
                     }
                     else {
-                        if (!(eventos.get(eventos.size()-1).equals(cliente.retornarEventos().get(cliente.retornarEventos().size()-1)))) {
-                            eventos = cliente.retornarEventos();
-                            desenhaEventos();
+                        List <Evento> eventosServTemp = cliente.retornarEventos();
+                        for (int i = 0; i < eventosServTemp.size(); i++) {
+                            if (!(eventos.contains(eventosServTemp.get(i)))) {
+                                eventos = eventosServTemp;
+                                desenhaEventos();
+                                System.out.println("TO AQUI");
+                                break;
+                            }
                         }
                     }
                 }

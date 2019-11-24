@@ -42,12 +42,15 @@ public class TelaServidor extends javax.swing.JFrame implements ActionListener {
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Saída do Servidor");
+        setResizable(false);
 
         labelStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         labelStatus.setForeground(new java.awt.Color(102, 102, 255));
         labelStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelStatus.setText("Status");
 
+        txtAreaStatus.setEditable(false);
         txtAreaStatus.setColumns(20);
         txtAreaStatus.setRows(5);
         jScrollPane1.setViewportView(txtAreaStatus);
