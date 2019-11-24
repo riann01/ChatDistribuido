@@ -2,17 +2,12 @@ package screens;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.rmi.RemoteException;
-import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import sds.User;
 import sds.Cliente;
@@ -41,8 +36,10 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         //cliente.entrarNoChat(host,usr);
         entrarNoChat(host,usr);
         atualizarNum(host);
+        enviarBdc("Entrar");
         new Thread(cliente.verificaAtualizacaoEvento).start();
         txtAreaMsg.setText("");
+        
     }
     
         
@@ -58,11 +55,12 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnEnviar) {
             if (!txtAreaMsg.getText().equals("")) {
-                GridBagConstraints gbc = new GridBagConstraints();
+                /*GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 painelMsgs.add(retornaMargem(), gbc);
                 painelMsgs.add(new BalaoMensagem(fotoUsuarioI, labelNickname.getText(), txtAreaMsg.getText()), gbc);
-                painelMsgs.repaint();
+                painelMsgs.repaint();*/
+                enviarMensagem(txtAreaMsg.getText());
                 painelMsgs.updateUI();
                 txtAreaMsg.setText("");
                 txtAreaMsg.requestFocus();
@@ -70,6 +68,8 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         }
         if (e.getSource() == btnSair) {
             sairDoChat(host, this.usr);
+            atualizarNum(host);
+            enviarBdc("Sair");
             this.dispose();
         }
     }
@@ -81,6 +81,29 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         painelMsgs.add(comp, gbc);
         painelMsgs.repaint();
         painelMsgs.updateUI();
+    }
+    
+    public void enviarMensagem(String msg) {
+        Evento evtMsg = new Evento();
+        evtMsg.setConteudoEvento(msg);
+        evtMsg.setTipoEvento("MSG");
+        evtMsg.setUsr(usr);
+        cliente.incluirEvento(evtMsg);
+    }
+    
+    public void enviarBdc(String tipoBdc) {
+        Evento evtBdc = new Evento();
+        if (tipoBdc.equalsIgnoreCase("Entrar")) {
+            evtBdc.setConteudoEvento("O usuário " + usr.getNickname() + " entrou no chat, divirtam-se!");
+        }
+        else {
+            if (tipoBdc.equalsIgnoreCase("Sair")) {
+                evtBdc.setConteudoEvento("O usuário " + usr.getNickname() + " saiu do chat, volte logo!");
+            }
+        }
+        evtBdc.setTipoEvento("BDC");
+        evtBdc.setUsr(usr);
+        cliente.incluirEvento(evtBdc);
     }
     
     public void atualizarNum(String host) {
@@ -225,11 +248,11 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String n = txtAreaMsg.getText();
             if (!(txtAreaMsg.getText().equals(""))) {
-                GridBagConstraints gbc = new GridBagConstraints();
+                /*GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 painelMsgs.add(retornaMargem(), gbc);
-                painelMsgs.add(new BalaoMensagem(fotoUsuarioI, labelNickname.getText(), txtAreaMsg.getText()), gbc);
-                painelMsgs.repaint();
+                painelMsgs.add(new BalaoMensagem(fotoUsuarioI, labelNickname.getText(), txtAreaMsg.getText()), gbc);*/
+                enviarMensagem(txtAreaMsg.getText());
                 painelMsgs.updateUI();
                 txtAreaMsg.setText("");
                 txtAreaMsg.requestFocus();

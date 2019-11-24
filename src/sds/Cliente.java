@@ -21,7 +21,7 @@ public class Cliente implements Serializable {
         }
         catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro1: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         
         return -1;
@@ -46,7 +46,7 @@ public class Cliente implements Serializable {
             stub.removerUsuario(usr);
         }
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro2: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
     }
@@ -58,7 +58,7 @@ public class Cliente implements Serializable {
             return stub.retornarEventos();
         }
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro3: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
         return null;
@@ -71,7 +71,8 @@ public class Cliente implements Serializable {
             stub.incluirEvento(evt);
         }
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro4: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
             System.exit(0);
         }
     }
@@ -99,7 +100,7 @@ public class Cliente implements Serializable {
                 
             }
             catch(Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + e.getMessage() + "\nO Chat será fechado.");
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro5:\n" + e.getMessage() + "\nO Chat será fechado.");
                 e.printStackTrace();
                 System.exit(0);
             }

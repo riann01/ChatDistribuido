@@ -6,19 +6,19 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import screens.TelaServidor;
 
 public class Servidor implements InterfaceChat, Serializable {
 
-    private List<User> usuarios;
-    private List<Evento> eventos;
+    private List<User> usuarios = new ArrayList<User>();;
+    private List<Evento> eventos = new ArrayList<Evento>();
+    private static TelaServidor tServ = new TelaServidor();
     
     public Servidor () {
-        usuarios = new ArrayList<User>();
-        eventos = new ArrayList<Evento>();
     }
     
     public static void main(String[] args) {
+        
         Servidor serv = new Servidor();
         try {
             InterfaceChat stub = (InterfaceChat) UnicastRemoteObject.exportObject(serv, 0);
@@ -26,8 +26,13 @@ public class Servidor implements InterfaceChat, Serializable {
             reg.bind("InterfaceChat", stub);
         }
         catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            tServ.getStatusLabel().setText("ERRO DO SERVIDOR");
+            tServ.getStatusLabel().setForeground(new java.awt.Color(255, 255, 255));
+            tServ.getStatusLabel().setText(tServ.getTxtArea().getText() + "\n" + "ERRO:\n" + e.getMessage());
         }
+        tServ.getStatusLabel().setText("PRONTO");
+        tServ.getStatusLabel().setForeground(new java.awt.Color(50, 205, 50));
     }
     
     @Override
@@ -38,6 +43,9 @@ public class Servidor implements InterfaceChat, Serializable {
     @Override
     public void incluirEvento(Evento evt) {
         eventos.add(evt);
+        tServ.getTxtArea().setText(tServ.getTxtArea().getText() + 
+        "\nEVENTO RECEBIDO:\n" + "USER:\n" + evt.getUsr() + "\nEVT_TYPE:\n"
+        + evt.getTipoEvento() + "\nEVT_CONTENT:\n" + evt.getConteudoEvento());
     }
     
     @Override
@@ -64,8 +72,6 @@ public class Servidor implements InterfaceChat, Serializable {
             }
         }
     }
-    
-    
     
     @Override
     public List<User> retornaUsuarios() {

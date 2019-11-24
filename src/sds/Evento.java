@@ -1,8 +1,9 @@
 package sds;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class Evento implements Comparator<Evento> {
+public class Evento implements Comparator<Evento>, Serializable {
 
     private String tipoEvento;
     private String conteudoEvento;
