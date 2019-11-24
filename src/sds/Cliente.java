@@ -85,26 +85,5 @@ public class Cliente implements Serializable {
         return this.eventos;
     }
     
-    public Runnable verificaAtualizacaoEvento = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                if (eventos.isEmpty()) {
-                    eventos = retornarEventos();
-                }
-                else {
-                    if (!(eventos.get(eventos.size()-1).equals(retornarEventos().get(retornarEventos().size()-1)))) {
-                        eventos = retornarEventos();
-                    }
-                }
-                
-            }
-            catch(Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro5:\n" + e.getMessage() + "\nO Chat será fechado.");
-                e.printStackTrace();
-                System.exit(0);
-            }
-        }
-    };
     
 }

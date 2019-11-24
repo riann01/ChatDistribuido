@@ -3,24 +3,14 @@ import sds.User;
 
 public class BroadcastMensagem extends javax.swing.JPanel {
 
-    public BroadcastMensagem(User usr, int es) {
+    public BroadcastMensagem(String msg) {
         initComponents();
-        labelBroadcast.setText(processarBroadcast(usr, es));
+        labelBroadcast.setText(processarBroadcast(msg));
         this.setVisible(true);
     }
     
-    public String processarBroadcast(User usr, int es) {
-        if (es == 0) {
-            return "O usuário " + usr.getNickname() + " entrou no chat, divirtam-se!";
-        }
-        else {
-            if (es == 1) {
-                return "O usuário " + usr.getNickname() + "saiu do chat.";
-            }
-            else {
-                return null;
-            }
-        }
+    public String processarBroadcast(String msg) {
+        return msg;
     }
 
     @SuppressWarnings("unchecked")

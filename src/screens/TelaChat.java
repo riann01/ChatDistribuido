@@ -7,7 +7,10 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import sds.User;
 import sds.Cliente;
@@ -19,6 +22,8 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
     private String host;
     private User usr;
     private Cliente cliente = new Cliente();
+    private List<Evento> eventos = new ArrayList<Evento>();
+    private List<Evento> renderizados = new ArrayList<Evento>();
     
     public TelaChat(User usr, String host, int porta) {
         super("Sala de Chat em " + host + ":" + porta);
@@ -31,15 +36,13 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         btnEnviar.addActionListener(this);
         btnSair.addActionListener(this);
-        inserirComponente(new BroadcastMensagem(usr, 0));
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(50);
         //cliente.entrarNoChat(host,usr);
         entrarNoChat(host,usr);
         atualizarNum(host);
         enviarBdc("Entrar");
-        new Thread(cliente.verificaAtualizacaoEvento).start();
+        new Thread(verificaAtualizacaoEvento).start();
         txtAreaMsg.setText("");
-        
     }
     
         
@@ -119,17 +122,51 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener {
        cliente.sairDoChat(host, usr);
     }
     
-    /*private Runnable AttEventos = new Runnable() {
+    public void desenhaEventos() {
+        if (!eventos.isEmpty()) {
+            for (int i = 0; i < eventos.size(); i++) {
+                if (!(renderizados.contains(eventos.get(i)))) {
+                    if (eventos.get(i).getTipoEvento().equals("BDC")) {
+                        BroadcastMensagem bmsg = new BroadcastMensagem(eventos.get(i).getConteudoEvento());
+                        inserirComponente(bmsg);
+                    }
+                    else {
+                        if (eventos.get(i).getTipoEvento().equals("MSG")) {
+                            BalaoMensagem bmsg = new BalaoMensagem(eventos.get(i).getUsr(), eventos.get(i).getConteudoEvento());
+                            inserirComponente(bmsg);
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    public Runnable verificaAtualizacaoEvento = new Runnable() {
         @Override
         public void run() {
-            try {
-                while (true) {
-                    wait(2);
-                    verificarAtualizacoesDeEventos();
+            while(true) {
+                try {
+                    //sleep(1);
+                    if (eventos.isEmpty()) {
+                        eventos = cliente.retornarEventos();
+                        desenhaEventos();
+                    }
+                    else {
+                        if (!(eventos.get(eventos.size()-1).equals(cliente.retornarEventos().get(cliente.retornarEventos().size()-1)))) {
+                            eventos = cliente.retornarEventos();
+                            desenhaEventos();
+                        }
+                    }
                 }
-            } catch (Exception e){}
-       }
-    };*/
+                catch(Exception e) {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro5:\n" + e.getMessage() + "\nO Chat será fechado.");
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+            }
+        }
+    };
     
     public JPanel retornaMargem() {
         JPanel margem = new JPanel();

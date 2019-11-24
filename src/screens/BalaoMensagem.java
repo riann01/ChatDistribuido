@@ -2,12 +2,13 @@ package screens;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import sds.User;
 
 public class BalaoMensagem extends javax.swing.JPanel {
 
-    public BalaoMensagem(ImageIcon foto, String nickname, String msg) {
+    public BalaoMensagem(User usr, String msg) {
         initComponents();
-        desenharComponente(foto, nickname);
+        desenharComponente(usr.getFoto(), usr.getNickname());
         labelMsg.setText(solicitarHTML(msg));
         this.setVisible(true);
         this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));

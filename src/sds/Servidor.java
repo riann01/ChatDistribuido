@@ -13,12 +13,8 @@ public class Servidor implements InterfaceChat, Serializable {
     private List<User> usuarios = new ArrayList<User>();;
     private List<Evento> eventos = new ArrayList<Evento>();
     private static TelaServidor tServ = new TelaServidor();
-    
-    public Servidor () {
-    }
-    
+
     public static void main(String[] args) {
-        
         Servidor serv = new Servidor();
         try {
             InterfaceChat stub = (InterfaceChat) UnicastRemoteObject.exportObject(serv, 0);
