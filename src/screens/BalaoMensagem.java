@@ -16,8 +16,8 @@ public class BalaoMensagem extends javax.swing.JPanel {
 
     public String solicitarHTML(String mensagem) {
         String msgComHTML = "";
-        if (mensagem.length() > 30) {
-            for (int i = 0; i < mensagem.length(); i+=30) {
+        if (mensagem.length() > 50) {
+            for (int i = 0; i < mensagem.length(); i+=50) {
                 if (i >= mensagem.length()) {
                     break;
                 }
@@ -26,7 +26,7 @@ public class BalaoMensagem extends javax.swing.JPanel {
                         break;
                     }
                     else {
-                        msgComHTML = msgComHTML + "&#013;" + mensagem.substring(i, i+30);
+                        msgComHTML = msgComHTML + "&#013;" + mensagem.substring(i, i+50);
                     } 
                 }
             }

@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 public class Cliente implements Serializable {
     
-    private String host;
     private List<Evento> eventos;
 
     public Cliente() {
@@ -55,7 +54,7 @@ public class Cliente implements Serializable {
         }
     }
     
-    public List<Evento> retornarEventos() {
+    public List<Evento> retornarEventos(String host) {
         try {
             Registry reg = LocateRegistry.getRegistry(host);
             InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
@@ -71,7 +70,7 @@ public class Cliente implements Serializable {
         return null;
     }
     
-    public void incluirEvento(Evento evt) {
+    public void incluirEvento(String host, Evento evt) {
         try {
             Registry reg = LocateRegistry.getRegistry(host);
             InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
@@ -82,29 +81,5 @@ public class Cliente implements Serializable {
             e.printStackTrace();
             System.exit(0);
         }
-    }
-    
-    public List<User> retornarUsuarios() {
-        try {
-            Registry reg = LocateRegistry.getRegistry(host);
-            InterfaceChat stub = (InterfaceChat) reg.lookup("InterfaceChat");
-            stub.retornaUsuarios();
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro4: " + e.getMessage() + "\n O programa será fechado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            System.exit(0);
-        }
-        return null;
-    }
-    
-    public void setHost(String host) {
-        this.host = host;
-    }
-    
-    public List<Evento> getLocalEvents() {
-        return this.eventos;
-    }
-    
-    
+    }    
 }

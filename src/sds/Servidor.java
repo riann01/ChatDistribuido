@@ -56,7 +56,7 @@ public class Servidor implements InterfaceChat, Serializable {
         if (flag) {
             eventos.add(evt);
             tServ.getTxtArea().setText(tServ.getTxtArea().getText() + 
-            "\nEVENTO RECEBIDO:\n" + "USER:\n" + evt.getUsr() + "\nEVT_TYPE:\n"
+            "\nEVENTO RECEBIDO:\n" + "USER:\n" + evt.getUsr().getNickname() + "\nEVT_TYPE:\n"
             + evt.getTipoEvento() + "\nEVT_CONTENT:\n" + evt.getConteudoEvento()
             + "\nBASE:\n" + evt.getBase());
         }
@@ -66,11 +66,6 @@ public class Servidor implements InterfaceChat, Serializable {
     @Override
     public List<Evento> retornarEventos() {
         return this.eventos;
-    }
-    
-    @Override
-    public List<User> retornaUsuarios() {
-        return usuarios;
     }
     
     @Override

@@ -92,7 +92,7 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener, Runn
         base = ran.nextInt((99 - 1) + 1);
         base = base * 7 * Calendar.MILLISECOND;
         evtMsg.setBase(base);
-        cliente.incluirEvento(evtMsg);
+        cliente.incluirEvento(host, evtMsg);
     }
     
     public void enviarBdc(String tipoBdc) {
@@ -112,7 +112,7 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener, Runn
         base = ran.nextInt((99 - 1) + 1);
         base = base * 7 * Calendar.MILLISECOND;
         evtBdc.setBase(base);
-        cliente.incluirEvento(evtBdc);
+        cliente.incluirEvento(host, evtBdc);
     }
     
     public void atualizarNum(String host) {
@@ -164,11 +164,11 @@ public class TelaChat extends javax.swing.JFrame implements ActionListener, Runn
             }
             
             if (renderizados.isEmpty()) {
-                eventos = cliente.retornarEventos();
+                eventos = cliente.retornarEventos(host);
                 desenhaEventos();
             }
             else {
-                List <Evento> eventosServTemp = cliente.retornarEventos();
+                List <Evento> eventosServTemp = cliente.retornarEventos(host);
                 if (!(eventosServTemp == null)) {
                     if (renderizados.size() != eventosServTemp.size()) {
                         eventos = eventosServTemp;

@@ -100,9 +100,9 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
                 BufferedImage imag = ImageIO.read(arquivo);
                 if (imag == null) {
                     fotoUsuario.setIcon(foto);
-                } 
+                }
                 else {
-                    Image image = imag;                    
+                    Image image = imag;
                     image = image.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
                     ImageIcon icon = new ImageIcon(image);
                     fotoUsuario.setIcon(icon);
@@ -162,8 +162,8 @@ public class TelaEntrada extends javax.swing.JFrame implements ActionListener {
         }
         if (e.getSource() == btnEntrar) {
             boolean flag = true;
-            if (nickname.getText().length() < 3) {
-                JOptionPane.showMessageDialog(null, "Seu nickname deve conter no mínimo 3 caracteres.", "Erro", JOptionPane.ERROR_MESSAGE);
+            if (nickname.getText().length() < 3 || nickname.getText().length() > 6) {
+                JOptionPane.showMessageDialog(null, "Seu nickname deve conter no mínimo 3 caracteres e no máximo 6.", "Erro", JOptionPane.ERROR_MESSAGE);
                 flag = false;
             }
             if (ipServidor.getText().equals("") || ipServidor.getText().equals(" ")) {
